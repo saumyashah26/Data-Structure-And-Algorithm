@@ -1,0 +1,29 @@
+// Return the size of the largest sub-tree which is also a BST
+
+
+pair<int,pair<int,pair<int,bool>>> solve(Node* root,int &ans){
+    if(!root) return {0,{0,{INT_MAX,true}}};
+    pair<int,pair<int,pair<int,bool>>> p1=solve(root->left,ans);
+    pair<int,pair<int,pair<int,bool>>> p2=solve(root->right,ans);
+    int num=p1.first+p2.first+1;
+    if((root->left==NULL || root->left->data<root->data) && (root->right==NULL || root->right->data>root->data) && p1.second.second.second && p2.second.second.second){
+        int max1=p1.second.first;
+        int min1=p1.second.second.first;
+        int max2=p2.second.first;
+        int min2=p2.second.second.first;
+        if(max1<root->data && min2>root->data) {
+            ans=max(ans,num);
+            return {num,{max(max1,max(max2,root->data)) ,{min(min1,min(min2,root->data)),true}}};        
+        }
+        
+    }
+    return {num,{INT_MAX,{INT_MAX,false}}};
+}
+
+int largestBst(Node *root)
+{
+	//Your code here
+	int ans=0;
+	solve(root,ans);
+	return ans;
+}
