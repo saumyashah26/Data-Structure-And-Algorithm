@@ -1,0 +1,30 @@
+//Given the root of a binary tree and an integer targetSum, return the number of paths where the sum of the values along the path equals targetSum.
+
+//The path does not need to start or end at the root or a leaf, but it must go downwards
+
+
+int ans;
+void solve(TreeNode* root,int t,vector<int> &v){
+    if(root==NULL) return;
+    v.push_back(root->val);
+    solve(root->left,t,v);
+    solve(root->right,t,v);
+    int sum=0;
+    for(int i=v.size()-1;i>=0;i--){
+        sum+=v[i];
+        if(sum==t) ans++;
+       // cout<<ans<<"\n";
+    }
+    v.pop_back();
+    return;
+}
+
+class Solution {
+public:
+    int pathSum(TreeNode* root, int sum) {
+        ans=0;
+        vector<int> v;
+        solve(root,sum,v);
+        return ans;
+    }
+};
