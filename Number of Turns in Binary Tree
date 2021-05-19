@@ -1,0 +1,41 @@
+//Given a binary tree and data value of two of its nodes. Find the number of turns needed to reach from one node to another in the given binary tree.
+
+Node* lca(Node* root,int p,int q){
+    if(root==NULL) return NULL;
+    if(root->data==p || root->data==q) return root;
+    Node* left=lca(root->left,p,q);
+    Node* right=lca(root->right,p,q);
+    if(left && right) return root;
+    return left!=NULL?left:right;
+}
+
+bool count(Node* root,int target,int c,int &Count){
+    if(root==NULL) return false;
+    if(root->data==target) return true;
+    if(c==1){
+        if(count(root->left,target,0,Count)){
+            Count++;
+            return true;
+        }
+        return count(root->right,target,1,Count);
+    }else{
+        if(count(root->right,target,1,Count)){
+            Count++;
+            return true;
+        }
+        return count(root->left,target,0,Count);
+    }
+    return false;
+}
+
+int NumberOFTurns(struct Node* root, int first, int second)
+{
+    Node* LCA=lca(root,first,second);   
+    int Count = 0;
+    count(LCA->right, second, 1,Count);
+    count(LCA->left, second, 0,Count);
+    count(LCA->right, first, 1,Count);
+    count(LCA->left, first, 0,Count);
+    if (LCA->data != first && LCA->data != second) Count++;
+    return Count;
+}
