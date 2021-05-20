@@ -1,0 +1,25 @@
+//Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+// Time Complexity O(N) and Space Complexity O(1)
+class Solution {
+public:
+    int trap(vector<int>& h) {
+        int n=h.size();
+        if(n==0) return 0;
+        int lmax=h[0];
+        int rmax=h[n-1];
+        int i=0,j=n-1;
+        int ans=0;
+        while(i<=j){
+            if(lmax<rmax){
+                lmax=max(lmax,h[i]);
+                ans+=lmax-h[i];
+                i++;
+            }else{
+                rmax=max(rmax,h[j]);
+                ans+=rmax-h[j];
+                j--;
+            }
+        }
+        return ans;
+    }
+};
